@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Signup</title>
+        <link rel="stylesheet" href="style/signup.css">
+    </head>
+
+    <body>
+        <ul style="margin-top: 20px;">
+            <!--  -->
+            <li><a href="signup.html">signup</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="index.html">Home</a></li>
+
+          </ul>
+        <div id="signup-form-div">
+
+            <form id="form">
+                <!--Write form input elements here-->
+                <h1>SIGN UP</h1>
+                <input type="text" id="name" placeholder="enter your name"style="height: 40px; width: 240px;">
+                <input type="tele" id="mobile" placeholder ="enter your contact"style="height: 40px; width: 240px;"> 
+                <input type="email" id="email" placeholder="Enter your Email"style="height: 40px; width: 240px;"><br>
+                <input type="password" id="password" placeholder="Enter your Password"style="height: 40px; width: 240px;"><br>
+                <input type="submit" value="SIGN UP" id="submit"style="height: 40px; width: 240px;">
+
+
+            </form>
+
+        </div>
+    </body>
+
+</html>
+<script>
+    document.querySelector("#signup-form-div").addEventListener("submit",signupdetails);
+var allusers=JSON.parse(localStorage.getItem("userdetails"))|| [];
+    function signupdetails(event){
+        event.preventDefault();
+        var name=document.querySelector("#name").value;
+        var number=document.querySelector("#mobile").value;
+        var email=document.querySelector("#email").value;
+        var password=document.querySelector("#password").value;
+        var data={
+            name:name,
+            number:number,
+            email:email,
+            password:password
+        }
+        allusers.push(data);
+        localStorage.setItem("userdetails",JSON.stringify(allusers));
+    document
+      .querySelector("input[type='submit']")
+      .addEventListener("click", function () {
+        window.location.href = "login.html";
+      });
+    }
+
+</script>

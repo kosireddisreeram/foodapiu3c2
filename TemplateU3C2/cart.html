@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <style>
+    #cart{
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+      text-align: center;
+      font-size: 22px;
+    }
+    #img1{
+      width: 400px;
+      height: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+    #btn{
+      width: 140px;
+      height: 40px;
+      
+      margin-right: 20px;
+    }
+    #btn1{
+      width: 240px;
+      height: 40px;
+      margin-right: 20px;
+      margin-top: 20px;
+    }
+    #total-price{
+      float: right;
+      width: 180px;
+    }
+    #cartlength{
+      float: right;
+      margin-top: 60px;
+      margin-right: -150px;
+      /* margin-top: 100px;
+      padding-left: 500px; */
+    }
+ 
+  </style>
+
+  <body>
+    <div id="total-div">
+      <h2 id="total-price" >
+        <!--Show cart total here, do not add anything only Total value. Not even "Total - 1200Rs" but like this "1200" -->
+      </h2>
+      <h2 id="cartlength"></h2>
+    </div>
+    <div id="cart">
+      <!--Show dishes added to cart here--> 
+    </div>
+  </body>
+</html>
+<script>
+
+var cartarr=JSON.parse(localStorage.getItem("cart")) || [];
+document.getElementById("cartlength").innerHTML="NO of Items:"+cartarr.length;
+let container1 = document.getElementById("cart")
+function appendproducts(items){
+items.forEach(function(elem,index){
+
+
+    let div1 = document.createElement("div")
+    div1.setAttribute("id", "div1")
+  
+  let img1 = document.createElement("img")
+  img1.src=elem.strMealThumb
+  img1.setAttribute("id", "img1")
+
+  let name1= document.createElement("p")
+  name1.innerText=elem.strMeal
+
+  let price1= document.createElement("p")
+  price1.innerText=elem.price+"-" + elem.quant;
+  var button1 =document.createElement("button")
+button1.innerText="ADD+1";
+button1.setAttribute("id","btn");
+button1.addEventListener("click",function(){
+    increasecount(index);
+})
+var button2 =document.createElement("button")
+button2.innerText="minus-1";
+button2.setAttribute("id","btn");
+
+button2.addEventListener("click",function(){
+    decreasecount(index);
+})
+var div2=document.createElement("div")
+var remove =document.createElement("button")
+remove.setAttribute("id","btn1")
+remove.innerText="Remove item from cart";
+remove.addEventListener("click",function(){
+cartarr.splice(index,1);
+localStorage.setItem("cart",JSON.stringify(cartarr));
+document.querySelector("#cart").innerHTML='';
+appendproducts(cartarr);
+if(cartarr.length==0){
+  document.querySelector("#cartlength").innerHTML= "No of items:"+0;
+  document.querySelector("#total-price").innerHTML= "Cart Total:"+0;
+}
+  
+})
+div2.append(remove)
+  div1.append(img1,name1, price1,button1,button2,div2)
+  container1.append(div1)
+
+})
+}
+
+function showtotal(){
+       var total=cartarr.reduce(function(acc,item){
+           return acc+(item.price*item.quant)
+       },0)
+       document.getElementById("total-price").innerText="Cart Total:"+total
+       localStorage.setItem("total",JSON.stringify(total));
+       }
+       
+function increasecount(index){
+document.querySelector("#cart").innerHTML=""
+cartarr[index].quant++;
+localStorage.setItem("cart",JSON.stringify(cartarr));
+
+appendproducts(cartarr)
+showtotal()
+}
+
+function decreasecount(index){
+document.querySelector("#cart").innerHTML=""
+cartarr[index].quant--;
+localStorage.setItem("cart",JSON.stringify(cartarr));
+
+appendproducts(cartarr)
+showtotal()
+}
+appendproducts(cartarr);
+showtotal();
+</script> 
